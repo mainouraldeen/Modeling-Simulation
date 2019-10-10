@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MultiQueueModels
 {
-    public class TimeDistribution
+    public class TimeDistribution //one row
     {
         public int Time { get; set; }
         public decimal Probability { get; set; }
