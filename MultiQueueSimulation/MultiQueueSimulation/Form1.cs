@@ -18,9 +18,9 @@ namespace MultiQueueSimulation
         {
             InitializeComponent();
         }
+        public SimulationSystem simSys = new SimulationSystem();
         public void fillSimSysObj(string[] sysData) //we need to add endline wehna bna5od l data mn l gui
         {
-            SimulationSystem simSys = new SimulationSystem();
             simSys.NumberOfServers = Convert.ToInt32(sysData[1]);
             simSys.Servers = new List<Server>(simSys.NumberOfServers);
             
@@ -72,6 +72,40 @@ namespace MultiQueueSimulation
                 simSys.Servers.Add(server);
             }
         }
+        public void fillInterArrivaleTable(SimulationSystem simSystem)
+        {
+            simSystem.InterarrivalDistribution[0].CummProbability = simSystem.InterarrivalDistribution[0].Probability;
+            simSystem.InterarrivalDistribution[0].MinRange = 1;
+            simSystem.InterarrivalDistribution[0].MaxRange = Convert.ToInt32(simSystem.InterarrivalDistribution[0].Probability * 100);
+            for(int i=1; i<simSystem.InterarrivalDistribution.Count; i++)
+            {
+                simSystem.InterarrivalDistribution[i].CummProbability = simSystem.InterarrivalDistribution[i].Probability + 
+                    simSystem.InterarrivalDistribution[i - 1].CummProbability;
+                simSystem.InterarrivalDistribution[i].MinRange = simSystem.InterarrivalDistribution[i - 1].MaxRange + 1;
+                simSystem.InterarrivalDistribution[i].MaxRange = simSystem.InterarrivalDistribution[i - 1].MaxRange +
+                    Convert.ToInt32(simSystem.InterarrivalDistribution[i].Probability * 100);
+
+            }
+        }
+        public void fillServersTimeDistribution(SimulationSystem simSystem)
+        {
+            for(int i=0; i<simSystem.Servers.Count; i++)
+            {
+                simSystem.Servers[i].TimeDistribution[0].CummProbability = simSystem.Servers[i].TimeDistribution[0].Probability;
+                simSystem.Servers[i].TimeDistribution[0].MinRange = 1;
+                simSystem.Servers[i].TimeDistribution[0].MaxRange = Convert.ToInt32(simSystem.Servers[i].TimeDistribution[0].Probability * 100);
+                for (int j = 1; j < simSystem.Servers[i].TimeDistribution.Count; j++) 
+                {
+                    simSystem.Servers[i].TimeDistribution[j].CummProbability = simSystem.Servers[i].TimeDistribution[j].Probability +
+                        simSystem.Servers[i].TimeDistribution[j - 1].CummProbability;
+                    simSystem.Servers[i].TimeDistribution[j].MinRange = simSystem.Servers[i].TimeDistribution[j - 1].MaxRange + 1;
+                    simSystem.Servers[i].TimeDistribution[j].MaxRange = simSystem.Servers[i].TimeDistribution[j-1].MaxRange +
+                        Convert.ToInt32(simSystem.Servers[i].TimeDistribution[j].Probability * 100);
+                }
+
+            }
+
+        }
         private void readFileButton_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -81,6 +115,8 @@ namespace MultiQueueSimulation
                 string fileName = openFileDialog.FileName;
                 string []fileData = File.ReadAllLines(fileName);
                 fillSimSysObj(fileData);
+                fillInterArrivaleTable(simSys);
+                fillServersTimeDistribution(simSys);
 
                 MessageBox.Show("DONE");
             }
