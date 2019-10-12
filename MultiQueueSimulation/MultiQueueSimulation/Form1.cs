@@ -19,6 +19,7 @@ namespace MultiQueueSimulation
             InitializeComponent();
         }
         public SimulationSystem simSys = new SimulationSystem();
+        
         public void fillSimSysObj(string[] sysData) //we need to add endline wehna bna5od l data mn l gui
         {
             simSys.NumberOfServers = Convert.ToInt32(sysData[1]);
@@ -117,10 +118,52 @@ namespace MultiQueueSimulation
                 fillSimSysObj(fileData);
                 fillInterArrivaleTable(simSys);
                 fillServersTimeDistribution(simSys);
-
+                fillSimCaseRow();
                 MessageBox.Show("DONE");
             }
 
         }
+
+        public void fillSimCaseRow()
+        {
+            SimulationCase simRow = new SimulationCase();
+            Random randomNum = new Random();
+            simRow.CustomerNumber = 0;
+            simRow.RandomInterArrival = -1;
+            simRow.InterArrival = -1;
+            simRow.ArrivalTime = 0;
+            simRow.RandomService = randomNum.Next(1, 100);
+            simSys.SimulationTable.Add(simRow);
+
+            for (int i = 1; i < simSys.StoppingNumber; i++)
+            {
+                simRow = new SimulationCase();
+                simRow.CustomerNumber = i;
+                //
+                
+                simRow.RandomInterArrival = randomNum.Next(1, 100);
+                //
+ 
+                for (int j = 0; j < simSys.InterarrivalDistribution.Count; j++)
+                {
+                    if (simRow.RandomInterArrival >= simSys.InterarrivalDistribution[j].MinRange && simRow.RandomInterArrival <= simSys.InterarrivalDistribution[j].MaxRange)
+                    {
+                        simRow.InterArrival = j;
+                    }
+                }
+                //
+                simRow.ArrivalTime = simSys.SimulationTable[i - 1].ArrivalTime + simRow.InterArrival;
+
+                //
+                simRow.RandomService = randomNum.Next(1, 100);
+                simSys.SimulationTable.Add(simRow);
+
+         
+
+            }
+
+
+        }
+
     }
 }

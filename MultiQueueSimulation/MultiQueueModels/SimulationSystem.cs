@@ -18,7 +18,7 @@ namespace MultiQueueModels
 
         ///////////// INPUTS ///////////// 
         public int NumberOfServers { get; set; }
-        public int StoppingNumber { get; set; }
+        public int StoppingNumber { get; set; }//da momkn yb2a 3dd el customers
         public List<Server> Servers { get; set; }
         public List<TimeDistribution> InterarrivalDistribution { get; set; }
         public Enums.StoppingCriteria StoppingCriteria { get; set; }

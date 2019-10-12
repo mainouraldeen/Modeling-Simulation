@@ -13,11 +13,11 @@ namespace MultiQueueModels
             this.AssignedServer = new Server();
         }
 
-        public int CustomerNumber { get; set; }
+        public int CustomerNumber {get; set;}
         public int RandomInterArrival { get; set; }
         public int InterArrival { get; set; }
         public int ArrivalTime { get; set; }
-        public int RandomService { get; set; }
+        public int RandomService{ get; set; }
         public int ServiceTime { get; set; }
         public Server AssignedServer { get; set; }
         public int StartTime { get; set; }
