@@ -52,3 +52,9 @@ C:\Users\Mai Nour Al-Deen\Documents\GitHub\MultiQueueSimulation\MultiQueueSimula
 C:\Users\Mai Nour Al-Deen\Documents\GitHub\MultiQueueSimulation\MultiQueueSimulation\MultiQueueModels\obj\Debug\MultiQueueModels.csproj.CoreCompileInputs.cache
 C:\Users\Mai Nour Al-Deen\Documents\GitHub\MultiQueueSimulation\MultiQueueSimulation\MultiQueueModels\obj\Debug\MultiQueueModels.dll
 C:\Users\Mai Nour Al-Deen\Documents\GitHub\MultiQueueSimulation\MultiQueueSimulation\MultiQueueModels\obj\Debug\MultiQueueModels.pdb
+C:\Users\Nada\Documents\GitHub\MultiQueueSimulation\MultiQueueSimulation\MultiQueueModels\bin\Debug\MultiQueueModels.dll
+C:\Users\Nada\Documents\GitHub\MultiQueueSimulation\MultiQueueSimulation\MultiQueueModels\bin\Debug\MultiQueueModels.pdb
+C:\Users\Nada\Documents\GitHub\MultiQueueSimulation\MultiQueueSimulation\MultiQueueModels\obj\Debug\MultiQueueModels.csprojAssemblyReference.cache
+C:\Users\Nada\Documents\GitHub\MultiQueueSimulation\MultiQueueSimulation\MultiQueueModels\obj\Debug\MultiQueueModels.csproj.CoreCompileInputs.cache
+C:\Users\Nada\Documents\GitHub\MultiQueueSimulation\MultiQueueSimulation\MultiQueueModels\obj\Debug\MultiQueueModels.dll
+C:\Users\Nada\Documents\GitHub\MultiQueueSimulation\MultiQueueSimulation\MultiQueueModels\obj\Debug\MultiQueueModels.pdb

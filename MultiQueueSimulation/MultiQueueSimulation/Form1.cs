@@ -19,12 +19,110 @@ namespace MultiQueueSimulation
             InitializeComponent();
         }
         public SimulationSystem simSys = new SimulationSystem();
-        
+
+        public void LeastUtilizationMethod()
+        {
+            for (int i = 0; i < simSys.SimulationTable.Count; i++)
+            {
+                if (simSys.StoppingCriteria == Enums.StoppingCriteria.SimulationEndTime)
+                {
+                    if (simSys.SimulationTable[i].ArrivalTime > simSys.StoppingNumber)
+                        break;
+                }
+                int CustomerArrivalTime = simSys.SimulationTable[i].ArrivalTime;
+
+                int MinWorkTime = 1000000;
+                List<int> AvailableServersID = new List<int>(simSys.NumberOfServers);//list of avail serversID
+                int ServerID = 0;
+
+                for (int j = 0; j < simSys.Servers.Count; j++) //searching for first suitable server
+                {
+                    if (CustomerArrivalTime >= simSys.Servers[j].FinishTime)//available server
+                    {
+                        AvailableServersID.Add(simSys.Servers[j].ID);
+                    }
+                }
+
+                if (AvailableServersID.Count > 0)
+                {
+                    for (int j = 0; j < AvailableServersID.Count; j++)//search for min work time in available servers
+                    {
+                        if (simSys.Servers[AvailableServersID[j]].TotalWorkingTime < MinWorkTime)//lw kza server has the same min ya5od awl wahed w khalas?el dr alt ay wa7ed
+                        {
+                            MinWorkTime = simSys.Servers[AvailableServersID[j]].TotalWorkingTime;
+                            ServerID = AvailableServersID[j];
+                        }
+
+                    }
+                    //assign
+                    for (int k = 0; k < simSys.Servers[ServerID].TimeDistribution.Count; k++)//loop on time dist of server[j]
+
+                    {
+                        if (simSys.SimulationTable[i].RandomService >= simSys.Servers[ServerID].TimeDistribution[k].MinRange
+                            && simSys.SimulationTable[i].RandomService <= simSys.Servers[ServerID].TimeDistribution[k].MaxRange)
+                        {
+                            simSys.SimulationTable[i].ServiceTime = simSys.Servers[ServerID].TimeDistribution[k].Time;
+                            simSys.SimulationTable[i].AssignedServer = simSys.Servers[ServerID];
+                            simSys.SimulationTable[i].StartTime = simSys.SimulationTable[i].ArrivalTime;
+                            simSys.Servers[ServerID].FinishTime = simSys.SimulationTable[i].StartTime + simSys.SimulationTable[i].ServiceTime;
+                            simSys.Servers[ServerID].TotalWorkingTime += simSys.SimulationTable[i].ServiceTime;
+
+                            break;
+                        }
+                    }
+                }
+                else//no available server
+                {
+                    //find the first server that will finish
+                    findFirstFinishServer(i);
+                }
+
+                simSys.SimulationTable[i].TimeInQueue = simSys.SimulationTable[i].StartTime - simSys.SimulationTable[i].ArrivalTime;
+                simSys.SimulationTable[i].EndTime = simSys.SimulationTable[i].ServiceTime + simSys.SimulationTable[i].StartTime;
+            }
+        }
+
+        public void findFirstFinishServer(int currentIndex)
+        {
+            Server firstFinishServer = null;
+            int minEndTime = 1000000;
+            int numOfServers = simSys.NumberOfServers;
+
+            //search for the least end time service and server
+            int q = currentIndex - 1;
+            while (numOfServers != 0)
+            {
+                if (simSys.SimulationTable[q].EndTime < minEndTime)
+                {
+                    minEndTime = simSys.SimulationTable[q].EndTime;
+                    firstFinishServer = simSys.SimulationTable[q].AssignedServer;
+                }
+                q -= 1;
+                numOfServers -= 1;
+            }
+            //assigning suitable server to the current row
+            simSys.SimulationTable[currentIndex].AssignedServer = firstFinishServer;
+            simSys.Servers[firstFinishServer.ID].TotalWorkingTime += simSys.SimulationTable[currentIndex].ServiceTime;
+
+            //searching for suitable range in firstFinishServer to assign the service time
+            for (int w = 0; w < firstFinishServer.TimeDistribution.Count; w++)
+            {
+                if (simSys.SimulationTable[currentIndex].RandomService >= firstFinishServer.TimeDistribution[w].MinRange && simSys.SimulationTable[currentIndex].RandomService <= firstFinishServer.TimeDistribution[w].MaxRange)
+                {
+                    simSys.SimulationTable[currentIndex].ServiceTime = firstFinishServer.TimeDistribution[w].Time;
+                    break;
+                }
+            }
+            simSys.SimulationTable[currentIndex].StartTime = minEndTime;
+            simSys.Servers[firstFinishServer.ID].FinishTime = simSys.SimulationTable[currentIndex].ServiceTime + simSys.SimulationTable[currentIndex].StartTime;
+
+        }
+
         public void fillSimSysObj(string[] sysData) //we need to add endline wehna bna5od l data mn l gui
         {
             simSys.NumberOfServers = Convert.ToInt32(sysData[1]);
             simSys.Servers = new List<Server>(simSys.NumberOfServers);
-            
+
             simSys.StoppingNumber = Convert.ToInt32(sysData[4]);
             if (Convert.ToInt32(sysData[7]) == 1)
             {
@@ -55,17 +153,19 @@ namespace MultiQueueSimulation
 
                 i++;
             }
-            for(int j =0; j < simSys.NumberOfServers; j++)
+            for (int j = 0; j < simSys.NumberOfServers; j++)
             {
                 i += 2;
                 Server server = new Server();
+                server.ID = j;
                 while (i != sysData.Length && sysData[i] != "")
                 {
                     string[] line = sysData[i].Split(new string[] { ", " }, StringSplitOptions.None);
                     TimeDistribution timeDistributionRow = new TimeDistribution();
                     timeDistributionRow.Time = Convert.ToInt32(line[0]);
                     timeDistributionRow.Probability = Convert.ToDecimal(line[1]);
-
+                    server.TotalWorkingTime = 0;
+                    server.FinishTime = 0;
                     server.TimeDistribution.Add(timeDistributionRow);
 
                     i++;
@@ -73,35 +173,149 @@ namespace MultiQueueSimulation
                 simSys.Servers.Add(server);
             }
         }
-        public void fillInterArrivaleTable(SimulationSystem simSystem)
+
+        public void highestPriorityMethod()
         {
-            simSystem.InterarrivalDistribution[0].CummProbability = simSystem.InterarrivalDistribution[0].Probability;
-            simSystem.InterarrivalDistribution[0].MinRange = 1;
-            simSystem.InterarrivalDistribution[0].MaxRange = Convert.ToInt32(simSystem.InterarrivalDistribution[0].Probability * 100);
-            for(int i=1; i<simSystem.InterarrivalDistribution.Count; i++)
+            for (int i = 0; i < simSys.SimulationTable.Count; i++) //bmshy 3la el customers
             {
-                simSystem.InterarrivalDistribution[i].CummProbability = simSystem.InterarrivalDistribution[i].Probability + 
-                    simSystem.InterarrivalDistribution[i - 1].CummProbability;
-                simSystem.InterarrivalDistribution[i].MinRange = simSystem.InterarrivalDistribution[i - 1].MaxRange + 1;
-                simSystem.InterarrivalDistribution[i].MaxRange = simSystem.InterarrivalDistribution[i - 1].MaxRange +
-                    Convert.ToInt32(simSystem.InterarrivalDistribution[i].Probability * 100);
+
+                int customerArrivalTime = simSys.SimulationTable[i].ArrivalTime;
+                bool serverFound = false;
+                int minEndTime = 1000000;
+                if (simSys.StoppingCriteria == Enums.StoppingCriteria.SimulationEndTime)
+                {
+                    if (customerArrivalTime > simSys.StoppingNumber)
+                        break;
+                }
+                //searching for first suitable server
+                for (int j = 0; j < simSys.Servers.Count; j++)
+                {
+                    if (customerArrivalTime >= simSys.Servers[j].FinishTime)//available server
+                    {
+                        for (int k = 0; k < simSys.Servers[j].TimeDistribution.Count; k++)
+                        {
+                            if (simSys.SimulationTable[i].RandomService >= simSys.Servers[j].TimeDistribution[k].MinRange && simSys.SimulationTable[i].RandomService <= simSys.Servers[j].TimeDistribution[k].MaxRange)
+                            {
+                                simSys.SimulationTable[i].ServiceTime = simSys.Servers[j].TimeDistribution[k].Time;
+                                simSys.SimulationTable[i].AssignedServer = simSys.Servers[j];
+                                serverFound = true;
+                                simSys.SimulationTable[i].StartTime = simSys.SimulationTable[i].ArrivalTime;
+                                simSys.Servers[j].FinishTime = simSys.SimulationTable[i].ServiceTime + simSys.SimulationTable[i].StartTime;
+                                simSys.Servers[j].TotalWorkingTime += simSys.SimulationTable[i].ServiceTime;
+
+                                break;
+                            }
+                        }
+                        if (serverFound)
+                            break;
+                    }
+                }
+                if (!serverFound)
+                {
+                    //find the fisrt server that will finish
+                    findFirstFinishServer(i);
+
+                }// if(! serverFound)
+                simSys.SimulationTable[i].TimeInQueue = simSys.SimulationTable[i].StartTime - simSys.SimulationTable[i].ArrivalTime;
+                simSys.SimulationTable[i].EndTime = simSys.SimulationTable[i].ServiceTime + simSys.SimulationTable[i].StartTime;
+                //  simSys.Servers[j].FinishTime = simSys.SimulationTable[i].ServiceTime + simSys.SimulationTable[i].StartTime;
 
             }
         }
-        public void fillServersTimeDistribution(SimulationSystem simSystem)
+
+        public void randomMethod()
         {
-            for(int i=0; i<simSystem.Servers.Count; i++)
+            Random rnd = new Random();
+
+            for (int i = 0; i < simSys.SimulationTable.Count; i++)
             {
-                simSystem.Servers[i].TimeDistribution[0].CummProbability = simSystem.Servers[i].TimeDistribution[0].Probability;
-                simSystem.Servers[i].TimeDistribution[0].MinRange = 1;
-                simSystem.Servers[i].TimeDistribution[0].MaxRange = Convert.ToInt32(simSystem.Servers[i].TimeDistribution[0].Probability * 100);
-                for (int j = 1; j < simSystem.Servers[i].TimeDistribution.Count; j++) 
+                if (simSys.StoppingCriteria == Enums.StoppingCriteria.SimulationEndTime)
                 {
-                    simSystem.Servers[i].TimeDistribution[j].CummProbability = simSystem.Servers[i].TimeDistribution[j].Probability +
-                        simSystem.Servers[i].TimeDistribution[j - 1].CummProbability;
-                    simSystem.Servers[i].TimeDistribution[j].MinRange = simSystem.Servers[i].TimeDistribution[j - 1].MaxRange + 1;
-                    simSystem.Servers[i].TimeDistribution[j].MaxRange = simSystem.Servers[i].TimeDistribution[j-1].MaxRange +
-                        Convert.ToInt32(simSystem.Servers[i].TimeDistribution[j].Probability * 100);
+                    if (simSys.SimulationTable[i].ArrivalTime > simSys.StoppingNumber)
+                        break;
+                }
+                bool foundServer = false;
+                HashSet<int> busyServers = new HashSet<int>();
+                while (foundServer == false && busyServers.Count < simSys.NumberOfServers)
+                {
+                    int randomServer = rnd.Next(0, simSys.NumberOfServers);
+                    int customerArrivalTime = simSys.SimulationTable[i].ArrivalTime;
+
+                    if (customerArrivalTime >= simSys.Servers[randomServer].FinishTime)//available server
+                    {
+                        for (int r = 0; r < simSys.Servers[randomServer].TimeDistribution.Count; r++)
+                        {
+                            int CustomerServiceTime = simSys.SimulationTable[i].ServiceTime;
+                            int MinRange = simSys.Servers[randomServer].TimeDistribution[r].MinRange;
+                            int MaxRange = simSys.Servers[randomServer].TimeDistribution[r].MaxRange;
+                            if (CustomerServiceTime >= MinRange && CustomerServiceTime <= MaxRange)
+                            {
+                                simSys.SimulationTable[i].ServiceTime = simSys.Servers[randomServer].TimeDistribution[r].Time;
+                                simSys.SimulationTable[i].StartTime = simSys.SimulationTable[i].ArrivalTime;
+                                simSys.SimulationTable[i].TimeInQueue = simSys.SimulationTable[i].StartTime - simSys.SimulationTable[i].ArrivalTime;
+                                simSys.SimulationTable[i].EndTime = simSys.SimulationTable[i].ServiceTime + simSys.SimulationTable[i].StartTime;
+                                simSys.Servers[randomServer].FinishTime = simSys.SimulationTable[i].StartTime + simSys.SimulationTable[i].ServiceTime;
+                                simSys.SimulationTable[i].AssignedServer = simSys.Servers[randomServer];
+                                simSys.Servers[randomServer].TotalWorkingTime += simSys.SimulationTable[i].ServiceTime;
+
+                                foundServer = true;
+                                break;
+                            }
+
+                        }
+                    }
+                    else
+                        busyServers.Add(simSys.Servers[randomServer].ID);
+                }
+                //kol el servers busy
+                if (!foundServer)
+                    findFirstFinishServer(i);
+
+                simSys.SimulationTable[i].TimeInQueue = simSys.SimulationTable[i].StartTime - simSys.SimulationTable[i].ArrivalTime;
+                simSys.SimulationTable[i].EndTime = simSys.SimulationTable[i].ServiceTime + simSys.SimulationTable[i].StartTime;
+            }
+        }
+
+        public void fillSimulationTable()
+        {
+            if (simSys.SelectionMethod == Enums.SelectionMethod.HighestPriority)
+            {
+                highestPriorityMethod();
+            }
+            else if (simSys.SelectionMethod == Enums.SelectionMethod.Random)
+            {
+                randomMethod();
+            }
+        }
+        public void fillInterArrivaleTable()
+        {
+            simSys.InterarrivalDistribution[0].CummProbability = simSys.InterarrivalDistribution[0].Probability;
+            simSys.InterarrivalDistribution[0].MinRange = 1;
+            simSys.InterarrivalDistribution[0].MaxRange = Convert.ToInt32(simSys.InterarrivalDistribution[0].Probability * 100);
+            for (int i = 1; i < simSys.InterarrivalDistribution.Count; i++)
+            {
+                simSys.InterarrivalDistribution[i].CummProbability = simSys.InterarrivalDistribution[i].Probability +
+                    simSys.InterarrivalDistribution[i - 1].CummProbability;
+                simSys.InterarrivalDistribution[i].MinRange = simSys.InterarrivalDistribution[i - 1].MaxRange + 1;
+                simSys.InterarrivalDistribution[i].MaxRange = simSys.InterarrivalDistribution[i - 1].MaxRange +
+                    Convert.ToInt32(simSys.InterarrivalDistribution[i].Probability * 100);
+
+            }
+        }
+        public void fillServersTimeDistribution()
+        {
+            for (int i = 0; i < simSys.Servers.Count; i++)
+            {
+                simSys.Servers[i].TimeDistribution[0].CummProbability = simSys.Servers[i].TimeDistribution[0].Probability;
+                simSys.Servers[i].TimeDistribution[0].MinRange = 1;
+                simSys.Servers[i].TimeDistribution[0].MaxRange = Convert.ToInt32(simSys.Servers[i].TimeDistribution[0].Probability * 100);
+                for (int j = 1; j < simSys.Servers[i].TimeDistribution.Count; j++)
+                {
+                    simSys.Servers[i].TimeDistribution[j].CummProbability = simSys.Servers[i].TimeDistribution[j].Probability +
+                        simSys.Servers[i].TimeDistribution[j - 1].CummProbability;
+                    simSys.Servers[i].TimeDistribution[j].MinRange = simSys.Servers[i].TimeDistribution[j - 1].MaxRange + 1;
+                    simSys.Servers[i].TimeDistribution[j].MaxRange = simSys.Servers[i].TimeDistribution[j - 1].MaxRange +
+                        Convert.ToInt32(simSys.Servers[i].TimeDistribution[j].Probability * 100);
                 }
 
             }
@@ -114,11 +328,17 @@ namespace MultiQueueSimulation
             if (result == DialogResult.OK) // Test result.
             {
                 string fileName = openFileDialog.FileName;
-                string []fileData = File.ReadAllLines(fileName);
+                string[] fileData = File.ReadAllLines(fileName);
+
                 fillSimSysObj(fileData);
-                fillInterArrivaleTable(simSys);
-                fillServersTimeDistribution(simSys);
+
+                fillInterArrivaleTable();
+                fillServersTimeDistribution();
+
                 fillSimCaseRow();
+
+                fillSimulationTable();
+
                 MessageBox.Show("DONE");
             }
 
@@ -140,10 +360,10 @@ namespace MultiQueueSimulation
                 simRow = new SimulationCase();
                 simRow.CustomerNumber = i;
                 //
-                
+
                 simRow.RandomInterArrival = randomNum.Next(1, 100);
                 //
- 
+
                 for (int j = 0; j < simSys.InterarrivalDistribution.Count; j++)
                 {
                     if (simRow.RandomInterArrival >= simSys.InterarrivalDistribution[j].MinRange && simRow.RandomInterArrival <= simSys.InterarrivalDistribution[j].MaxRange)
@@ -158,7 +378,7 @@ namespace MultiQueueSimulation
                 simRow.RandomService = randomNum.Next(1, 100);
                 simSys.SimulationTable.Add(simRow);
 
-         
+
 
             }
 
