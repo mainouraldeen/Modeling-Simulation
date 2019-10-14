@@ -136,3 +136,4 @@ C:\Users\Nada\Documents\GitHub\MultiQueueSimulation\MultiQueueSimulation\MultiQu
 C:\Users\Nada\Documents\GitHub\MultiQueueSimulation\MultiQueueSimulation\MultiQueueSimulation\obj\Debug\MultiQueueSimulation.csproj.CopyComplete
 C:\Users\Nada\Documents\GitHub\MultiQueueSimulation\MultiQueueSimulation\MultiQueueSimulation\obj\Debug\MultiQueueSimulation.exe
 C:\Users\Nada\Documents\GitHub\MultiQueueSimulation\MultiQueueSimulation\MultiQueueSimulation\obj\Debug\MultiQueueSimulation.pdb
+C:\Users\Mai Nour Al-Deen\Documents\GitHub\MultiQueueSimulation\MultiQueueSimulation\MultiQueueSimulation\obj\Debug\MultiQueueSimulation.Form2.resources

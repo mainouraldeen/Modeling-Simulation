@@ -18,7 +18,7 @@ namespace MultiQueueSimulation
         {
             InitializeComponent();
         }
-        public SimulationSystem simSys = new SimulationSystem();
+        public static SimulationSystem simSys = new SimulationSystem();
 
         public void LeastUtilizationMethod()
         {
@@ -321,6 +321,47 @@ namespace MultiQueueSimulation
             }
 
         }
+        public void systemCalculations()
+        {
+            PerformanceMeasures measures = new PerformanceMeasures();
+            int noCustomerWaited = 0, sumOfDelay = 0, maxQLength = 0;
+            for(int i=0; i<simSys.SimulationTable.Count; i++)
+            {
+                if (simSys.SimulationTable[i].TimeInQueue > 0)
+                {
+                    noCustomerWaited++;
+                    sumOfDelay += simSys.SimulationTable[i].TimeInQueue;
+                    maxQLength = Math.Max(maxQLength, simSys.SimulationTable[i].TimeInQueue);
+                }
+            }
+            measures.AverageWaitingTime = sumOfDelay / simSys.SimulationTable.Count;
+            measures.WaitingProbability = noCustomerWaited / simSys.SimulationTable.Count; //3mlt sim table count 3shan da 3dd el customers
+            measures.MaxQueueLength = maxQLength;
+            
+        }
+        public void serverCalculations()
+        {
+            int maxTimeServer = 0;
+            for (int i=0; i<simSys.Servers.Count; i++)   //3shan a7seb el total run time bta3 el simulation
+            {
+                maxTimeServer = Math.Max(simSys.Servers[i].FinishTime, maxTimeServer);
+            }
+            for (int i=0; i<simSys.Servers.Count; i++)
+            {
+                simSys.Servers[i].AverageServiceTime = simSys.Servers[i].TotalWorkingTime / simSys.SimulationTable.Count; // need to sure of no of customer
+                if (simSys.StoppingCriteria == Enums.StoppingCriteria.NumberOfCustomers)
+                {
+                    simSys.Servers[i].Utilization = simSys.Servers[i].TotalWorkingTime / maxTimeServer;
+                    simSys.Servers[i].IdleProbability = (maxTimeServer - simSys.Servers[i].TotalWorkingTime) / maxTimeServer;
+                }
+                else
+                {
+                    simSys.Servers[i].Utilization = simSys.Servers[i].TotalWorkingTime / simSys.StoppingNumber;
+                    simSys.Servers[i].IdleProbability = (simSys.StoppingNumber - simSys.Servers[i].TotalWorkingTime) / simSys.StoppingNumber;
+                }
+                
+            }
+        }
         private void readFileButton_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -338,8 +379,11 @@ namespace MultiQueueSimulation
                 fillSimCaseRow();
 
                 fillSimulationTable();
-
-                MessageBox.Show("DONE");
+                systemCalculations();
+                serverCalculations();
+               // MessageBox.Show("DONE");
+                Form2 f2 = new Form2();
+                f2.Show();
             }
 
         }
@@ -369,6 +413,7 @@ namespace MultiQueueSimulation
                     if (simRow.RandomInterArrival >= simSys.InterarrivalDistribution[j].MinRange && simRow.RandomInterArrival <= simSys.InterarrivalDistribution[j].MaxRange)
                     {
                         simRow.InterArrival = j;
+                        break;
                     }
                 }
                 //
