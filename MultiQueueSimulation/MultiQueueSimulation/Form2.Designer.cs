@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.button1 = new System.Windows.Forms.Button();
+            this.showChartsbutton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -41,24 +41,24 @@
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(2);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowTemplate.Height = 28;
-            this.dataGridView1.Size = new System.Drawing.Size(778, 378);
+            this.dataGridView1.Size = new System.Drawing.Size(778, 373);
             this.dataGridView1.TabIndex = 3;
             // 
-            // button1
+            // showChartsbutton
             // 
-            this.button1.Location = new System.Drawing.Point(325, 406);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(165, 32);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "Show Charts";
-            this.button1.UseVisualStyleBackColor = true;
+            this.showChartsbutton.Location = new System.Drawing.Point(325, 406);
+            this.showChartsbutton.Name = "showChartsbutton";
+            this.showChartsbutton.Size = new System.Drawing.Size(165, 32);
+            this.showChartsbutton.TabIndex = 4;
+            this.showChartsbutton.Text = "Show Charts";
+            this.showChartsbutton.UseVisualStyleBackColor = true;
             // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.showChartsbutton);
             this.Controls.Add(this.dataGridView1);
             this.Name = "Form2";
             this.Text = "Form2";
@@ -70,6 +70,6 @@
         #endregion
 
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button showChartsbutton;
     }
 }

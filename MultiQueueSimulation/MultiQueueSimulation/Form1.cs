@@ -379,7 +379,9 @@ namespace MultiQueueSimulation
                 fillSimCaseRow();
 
                 fillSimulationTable();
+
                 systemCalculations();
+
                 serverCalculations();
                // MessageBox.Show("DONE");
                 Form2 f2 = new Form2();
@@ -392,17 +394,17 @@ namespace MultiQueueSimulation
         {
             SimulationCase simRow = new SimulationCase();
             Random randomNum = new Random();
-            simRow.CustomerNumber = 0;
+            simRow.CustomerNumber = 1;
             simRow.RandomInterArrival = -1;
             simRow.InterArrival = -1;
             simRow.ArrivalTime = 0;
             simRow.RandomService = randomNum.Next(1, 100);
             simSys.SimulationTable.Add(simRow);
 
-            for (int i = 1; i < simSys.StoppingNumber; i++)
+            for (int i = 1; i < simSys.StoppingNumber; i++)//tab ana hna kda amshy 3la eh 8er el snum ana esa b add el simtable
             {
                 simRow = new SimulationCase();
-                simRow.CustomerNumber = i;
+                simRow.CustomerNumber = i+1;
                 //
 
                 simRow.RandomInterArrival = randomNum.Next(1, 100);
@@ -430,5 +432,69 @@ namespace MultiQueueSimulation
 
         }
 
+        private void getDataFromGUI_Click(object sender, EventArgs e)
+        {
+            simSys.NumberOfServers = Convert.ToInt32(noOfServerstextBox.Text);
+            simSys.StoppingNumber = Convert.ToInt32(stoppingNotextBox.Text);
+            if (noOfCustomersradioButton.Checked)
+                simSys.StoppingCriteria = Enums.StoppingCriteria.NumberOfCustomers;
+            else if (simEndTimeradioButton.Checked)
+                simSys.StoppingCriteria = Enums.StoppingCriteria.SimulationEndTime;
+            if (highestPriorityradioButton.Checked)
+            {
+                simSys.SelectionMethod = Enums.SelectionMethod.HighestPriority;
+            }
+            else if (randomradioButton.Checked)
+            {
+                simSys.SelectionMethod = Enums.SelectionMethod.Random;
+            }
+            else if (leastUtilizationradioButton.Checked)
+                simSys.SelectionMethod = Enums.SelectionMethod.LeastUtilization;
+
+            string intervalDistFromTextBox = InterarrivalDistributiontextbox.Text;
+            string[] intervalDist = intervalDistFromTextBox.Split(new[] { "\r\n", "\r", "\n", ",", " " }, StringSplitOptions.None);
+            intervalDist = intervalDist.Where(w => w != "").ToArray();
+            TimeDistribution timeDistribution;
+            for (int i = 0; i < intervalDist.Length; i += 2)
+            {
+                timeDistribution = new TimeDistribution();
+                timeDistribution.Time = Convert.ToInt32(intervalDist[i]);
+                timeDistribution.Probability = Convert.ToDecimal(intervalDist[i + 1]);
+                simSys.InterarrivalDistribution.Add(timeDistribution);
+            }
+            string serviceDistFromTextBox = serviceDistributiontextBox.Text;
+            string[] serviceDist = serviceDistFromTextBox.Split(new[] { "\r\n", "\r", "\n", ",", " " }, StringSplitOptions.None);
+            serviceDist = serviceDist.Where(w => w != "").ToArray();
+            Server server;
+            int k = 1;
+            for (int i = 0; i < simSys.NumberOfServers; i++)
+            {
+                server = new Server();
+                server.ID = i;
+                for (int j = 0; j < simSys.InterarrivalDistribution.Count; j++)
+                {
+                    timeDistribution = new TimeDistribution();
+                    timeDistribution.Time = Convert.ToInt32(serviceDist[k]);
+                    timeDistribution.Probability = Convert.ToDecimal(serviceDist[k + 1]);
+                    server.TotalWorkingTime = 0;
+                    server.FinishTime = 0;
+                    server.TimeDistribution.Add(timeDistribution);
+                    k += 2;
+                }
+                k++;
+                simSys.Servers.Add(server);
+            }
+            fillInterArrivaleTable();
+            fillServersTimeDistribution();
+
+            fillSimCaseRow();
+
+            fillSimulationTable();
+            systemCalculations();
+            serverCalculations();
+            Form2 f2 = new Form2();
+            f2.Show();
+            //MessageBox.Show("Done");
+        }
     }
 }
