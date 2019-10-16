@@ -52,6 +52,7 @@
             this.showChartsbutton.TabIndex = 4;
             this.showChartsbutton.Text = "Show Charts";
             this.showChartsbutton.UseVisualStyleBackColor = true;
+            this.showChartsbutton.Click += new System.EventHandler(this.showChartsbutton_Click);
             // 
             // Form2
             // 
@@ -61,7 +62,8 @@
             this.Controls.Add(this.showChartsbutton);
             this.Controls.Add(this.dataGridView1);
             this.Name = "Form2";
-            this.Text = "Form2";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Multi Queue Simulation Result";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
 

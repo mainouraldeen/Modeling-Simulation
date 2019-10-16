@@ -19,31 +19,26 @@ namespace MultiQueueSimulation
             fillGirdViewRows();
         }
 
-
         public void fillGirdViewColumns()
         {
-            dataGridView1.Columns.Add("A", "   A \n Customer Number");
-            dataGridView1.Columns.Add("B", "   B \n Random Digits For Arrival");
-            dataGridView1.Columns.Add("C", "   C \n Time between arrivals");
-            dataGridView1.Columns.Add("D", "   D \n Clock time of arrival");
-            dataGridView1.Columns.Add("E", "   E \n Random Digits for service");
+            dataGridView1.Columns.Add("A", "      A \n Customer Number");
+            dataGridView1.Columns.Add("B", "      B \n Random Digits For Arrival");
+            dataGridView1.Columns.Add("C", "      C \n Time between arrivals");
+            dataGridView1.Columns.Add("D", "      D \n Clock time of arrival");
+            dataGridView1.Columns.Add("E", "      E \n Random Digits for service");
             char ch = 'F';
             for (int i = 0; i < Form1.simSys.NumberOfServers; i++)
             {
-                dataGridView1.Columns.Add(ch.ToString(), "   "+ch.ToString()+"\nTime Service begins");
+                dataGridView1.Columns.Add(ch.ToString(), "      "+"Server  *"+(i+1).ToString()+"*\n         "+ch.ToString()+"\nTime Service begins");
                 ch = Convert.ToChar(ch + 1);
                     
-                dataGridView1.Columns.Add(ch.ToString(), "   "+ ch.ToString() + "\n Service time");
+                dataGridView1.Columns.Add(ch.ToString(), "      "+ ch.ToString() + "\n Service time");
                 ch = Convert.ToChar(ch + 1);
             
-                dataGridView1.Columns.Add(ch.ToString(), "   "+ ch.ToString() + "\n Time service ends");
+                dataGridView1.Columns.Add(ch.ToString(), "      "+ ch.ToString() + "\n Time service ends");
                 ch = Convert.ToChar(ch + 1);
-
-               
             }
-            dataGridView1.Columns.Add(ch.ToString(), "   "+ ch.ToString() + "\n Time in Queue");
-
-            
+            dataGridView1.Columns.Add(ch.ToString(), "      "+ ch.ToString() + "\n Time in Queue"); 
         }
 
         public void fillGirdViewRows()
@@ -62,6 +57,9 @@ namespace MultiQueueSimulation
                 });
             }
 
+            dataGridView1.Rows[0].Cells[1].Value = '_';
+            dataGridView1.Rows[0].Cells[2].Value = '_';
+
             int indx = dataGridView1.ColumnCount - 1;
             for (int i = 0; i < Form1.simSys.SimulationTable.Count; i++)
             {
@@ -75,9 +73,16 @@ namespace MultiQueueSimulation
                 dataGridView1.Rows[i].Cells[indx].Value = Form1.simSys.SimulationTable[i].TimeInQueue;
 
             }
-
+            foreach (DataGridViewColumn item in dataGridView1.Columns)
+            {
+                item.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            }
         }
 
-        
+        private void showChartsbutton_Click(object sender, EventArgs e)
+        {
+            Form3 f3= new Form3();
+            f3.Show();
+        }
     }
 }
