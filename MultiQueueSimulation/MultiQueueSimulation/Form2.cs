@@ -79,11 +79,6 @@ namespace MultiQueueSimulation
             }
         }
 
-        private void showChartsbutton_Click(object sender, EventArgs e)
-        {
-            Form3 f3= new Form3();
-            f3.Show();
-        }
         public void FillComboBox()
         {
             int noOfServers = Form1.simSys.NumberOfServers;
@@ -112,5 +107,12 @@ namespace MultiQueueSimulation
             probOfWaitTextBox.Text = Form1.simSys.PerformanceMeasures.WaitingProbability.ToString();
             maxQLengthTextBox.Text = Form1.simSys.PerformanceMeasures.MaxQueueLength.ToString();
         }
+
+        private void showChartsbutton_Click(object sender, EventArgs e)
+        {
+            Form3 f3 = new Form3();
+            f3.Show();
+        }
+
     }
 }

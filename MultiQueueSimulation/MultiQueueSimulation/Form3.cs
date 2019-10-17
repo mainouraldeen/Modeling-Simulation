@@ -26,8 +26,8 @@ namespace MultiQueueSimulation
 
         public void FillComboBox()
         {
-            int noOfServers=Form1.simSys.NumberOfServers;
-            for(int i = 0; i < noOfServers; i++)
+            int noOfServers = Form1.simSys.NumberOfServers;
+            for (int i = 0; i < noOfServers; i++)
             {
                 servercomboBox.Items.Add(i + 1);
             }
@@ -37,18 +37,22 @@ namespace MultiQueueSimulation
         {
             int serverID = Convert.ToInt32(servercomboBox.Text);
             statechart.Series["busy"].Points.Clear();
+            string busyData = "server busy slots:-\n";
 
-            //int col = 5 + (3 * serverID-1);
             for (int i = 0; i < Form1.simSys.SimulationTable.Count; i++)
             {
                 if (Form1.simSys.SimulationTable[i].AssignedServer.ID == serverID)
                 {
-                   // statechart.Series[0].ChartType = SeriesChartType.Column;
-                  int p1 = statechart.Series[0].Points.AddXY(Form1.simSys.SimulationTable[i].StartTime, 1);
-                  int p2 = statechart.Series[0].Points.AddXY(Form1.simSys.SimulationTable[i].EndTime, 1);
-
+                    //3mlt kda 3shan ymlaly between el cols el start wl end
+                    for (double c = Form1.simSys.SimulationTable[i].StartTime; c <= Form1.simSys.SimulationTable[i].EndTime; c += (double)0.01)
+                    {
+                        statechart.Series[0].Points.AddXY(c, 1);
+                    }
+                    busyData += Form1.simSys.SimulationTable[i].StartTime.ToString() + " : " + Form1.simSys.SimulationTable[i].EndTime.ToString() + '\n';
                 }
             }
+
+            MessageBox.Show(busyData);
         }
     }
 }
