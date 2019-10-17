@@ -84,5 +84,33 @@ namespace MultiQueueSimulation
             Form3 f3= new Form3();
             f3.Show();
         }
+        public void FillComboBox()
+        {
+            int noOfServers = Form1.simSys.NumberOfServers;
+            for (int i = 0; i < noOfServers; i++)
+            {
+                servercomboBox.Items.Add(i + 1);
+            }
+        }
+
+        private void Form2_Load(object sender, EventArgs e)
+        {
+            FillComboBox();
+        }
+
+        private void serverMeasursButton_Click(object sender, EventArgs e)
+        {
+            int serverId = Convert.ToInt32(servercomboBox.Text.ToString());
+            probOfIdleServerTextBox.Text = Form1.simSys.Servers[serverId-1].IdleProbability.ToString();
+            avgServiceTimeTextBox.Text = Form1.simSys.Servers[serverId-1].AverageServiceTime.ToString();
+            utilizationTextBox.Text = Form1.simSys.Servers[serverId-1].Utilization.ToString();            
+        }
+
+        private void systemMeasursButton_Click(object sender, EventArgs e)
+        {
+            avgWaitingTimeTextBox.Text = Form1.simSys.PerformanceMeasures.AverageWaitingTime.ToString();
+            probOfWaitTextBox.Text = Form1.simSys.PerformanceMeasures.WaitingProbability.ToString();
+            maxQLengthTextBox.Text = Form1.simSys.PerformanceMeasures.MaxQueueLength.ToString();
+        }
     }
 }
