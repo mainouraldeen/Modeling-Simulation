@@ -21,6 +21,7 @@ namespace MultiQueueSimulation
 
         public static SimulationSystem simSys = new SimulationSystem();
 
+        //done server's index bgd
         public void LeastUtilizationMethod()
         {
             for (int i = 0; i < simSys.SimulationTable.Count; i++)
@@ -48,25 +49,26 @@ namespace MultiQueueSimulation
                 {
                     for (int j = 0; j < AvailableServersID.Count; j++)//search for min work time in available servers
                     {
-                        if (simSys.Servers[AvailableServersID[j]].TotalWorkingTime < MinWorkTime)//lw kza server has the same min ya5od awl wahed w khalas?el dr alt ay wa7ed
+                        if (simSys.Servers[AvailableServersID[j] - 1].TotalWorkingTime < MinWorkTime)//lw kza server has the same min ya5od awl wahed w khalas?el dr alt ay wa7ed
                         {
-                            MinWorkTime = simSys.Servers[AvailableServersID[j]].TotalWorkingTime;
+                            MinWorkTime = simSys.Servers[AvailableServersID[j] - 1].TotalWorkingTime;
                             ServerID = AvailableServersID[j];
                         }
 
                     }
                     //assign
-                    for (int k = 0; k < simSys.Servers[ServerID].TimeDistribution.Count; k++)//loop on time dist of server[j]
+                    for (int k = 0; k < simSys.Servers[ServerID - 1].TimeDistribution.Count; k++)//loop on time dist of server[j]
 
                     {
-                        if (simSys.SimulationTable[i].RandomService >= simSys.Servers[ServerID].TimeDistribution[k].MinRange
-                            && simSys.SimulationTable[i].RandomService <= simSys.Servers[ServerID].TimeDistribution[k].MaxRange)
+                        if (simSys.SimulationTable[i].RandomService >= simSys.Servers[ServerID - 1].TimeDistribution[k].MinRange
+                            && simSys.SimulationTable[i].RandomService <= simSys.Servers[ServerID - 1].TimeDistribution[k].MaxRange)
                         {
-                            simSys.SimulationTable[i].ServiceTime = simSys.Servers[ServerID].TimeDistribution[k].Time;
-                            simSys.SimulationTable[i].AssignedServer = simSys.Servers[ServerID];
+                            simSys.SimulationTable[i].ServiceTime = simSys.Servers[ServerID - 1].TimeDistribution[k].Time;
+                            simSys.SimulationTable[i].AssignedServer = simSys.Servers[ServerID - 1];
+                            simSys.Servers[ServerID - 1].NoOfCustomers++;
                             simSys.SimulationTable[i].StartTime = simSys.SimulationTable[i].ArrivalTime;
-                            simSys.Servers[ServerID].FinishTime = simSys.SimulationTable[i].StartTime + simSys.SimulationTable[i].ServiceTime;
-                            simSys.Servers[ServerID].TotalWorkingTime += simSys.SimulationTable[i].ServiceTime;
+                            simSys.Servers[ServerID - 1].FinishTime = simSys.SimulationTable[i].StartTime + simSys.SimulationTable[i].ServiceTime;
+                            simSys.Servers[ServerID - 1].TotalWorkingTime += simSys.SimulationTable[i].ServiceTime;
 
                             break;
                         }
@@ -82,7 +84,7 @@ namespace MultiQueueSimulation
                 simSys.SimulationTable[i].EndTime = simSys.SimulationTable[i].ServiceTime + simSys.SimulationTable[i].StartTime;
             }
         }
-
+        //done server's index bgd
         public void findFirstFinishServer(int currentIndex)
         {
             Server firstFinishServer = null;
@@ -100,6 +102,7 @@ namespace MultiQueueSimulation
             }
             //assigning suitable server to the current row
             simSys.SimulationTable[currentIndex].AssignedServer = firstFinishServer;
+            simSys.Servers[firstFinishServer.ID - 1].NoOfCustomers++;
 
             //searching for suitable range in firstFinishServer to assign the service time
             for (int w = 0; w < firstFinishServer.TimeDistribution.Count; w++)
@@ -111,17 +114,21 @@ namespace MultiQueueSimulation
                 }
             }
             //not sure
-            simSys.Servers[firstFinishServer.ID].TotalWorkingTime += simSys.SimulationTable[currentIndex].ServiceTime;
+            simSys.Servers[firstFinishServer.ID - 1].TotalWorkingTime += simSys.SimulationTable[currentIndex].ServiceTime;
 
             simSys.SimulationTable[currentIndex].StartTime = minEndTime;
-            simSys.Servers[firstFinishServer.ID].FinishTime = simSys.SimulationTable[currentIndex].ServiceTime + simSys.SimulationTable[currentIndex].StartTime;
+            simSys.Servers[firstFinishServer.ID - 1].FinishTime = simSys.SimulationTable[currentIndex].ServiceTime + simSys.SimulationTable[currentIndex].StartTime;
 
         }
 
+        //done server's index bgd
         public void fillSimSysObj(string[] sysData) //we need to add endline wehna bna5od l data mn l gui
         {
             simSys.NumberOfServers = Convert.ToInt32(sysData[1]);
             simSys.Servers = new List<Server>(simSys.NumberOfServers);
+
+            //Ostor
+            simSys.SimulationTable = new List<SimulationCase>(100);
 
             simSys.StoppingNumber = Convert.ToInt32(sysData[4]);
             if (Convert.ToInt32(sysData[7]) == 1)
@@ -157,7 +164,7 @@ namespace MultiQueueSimulation
             {
                 i += 2;
                 Server server = new Server();
-                server.ID = j;
+                server.ID = j + 1;
                 while (i != sysData.Length && sysData[i] != "")
                 {
                     string[] line = sysData[i].Split(new string[] { ", " }, StringSplitOptions.None);
@@ -174,6 +181,7 @@ namespace MultiQueueSimulation
             }
         }
 
+        //done server's index bgd
         public void highestPriorityMethod()
         {
             for (int i = 0; i < simSys.SimulationTable.Count; i++) //bmshy 3la el customers
@@ -198,6 +206,8 @@ namespace MultiQueueSimulation
                             {
                                 simSys.SimulationTable[i].ServiceTime = simSys.Servers[j].TimeDistribution[k].Time;
                                 simSys.SimulationTable[i].AssignedServer = simSys.Servers[j];
+                                simSys.Servers[j].NoOfCustomers++;
+
                                 serverFound = true;
                                 simSys.SimulationTable[i].StartTime = simSys.SimulationTable[i].ArrivalTime;
                                 simSys.Servers[j].FinishTime = simSys.SimulationTable[i].ServiceTime + simSys.SimulationTable[i].StartTime;
@@ -222,11 +232,12 @@ namespace MultiQueueSimulation
             }
         }
 
+        //done server's index bgd
         public void randomMethod()
         {
             Random rnd = new Random();
 
-            for (int i = 0; i < simSys.SimulationTable.Count; i++)
+            for (int i= 0; i < simSys.SimulationTable.Count; i++)
             {
                 if (simSys.StoppingCriteria == Enums.StoppingCriteria.SimulationEndTime)
                 {
@@ -255,6 +266,8 @@ namespace MultiQueueSimulation
                                 simSys.SimulationTable[i].EndTime = simSys.SimulationTable[i].ServiceTime + simSys.SimulationTable[i].StartTime;
                                 simSys.Servers[randomServer].FinishTime = simSys.SimulationTable[i].StartTime + simSys.SimulationTable[i].ServiceTime;
                                 simSys.SimulationTable[i].AssignedServer = simSys.Servers[randomServer];
+                                simSys.Servers[randomServer].NoOfCustomers++;
+
                                 simSys.Servers[randomServer].TotalWorkingTime += simSys.SimulationTable[i].ServiceTime;
 
                                 foundServer = true;
@@ -288,8 +301,18 @@ namespace MultiQueueSimulation
 
             else
                 LeastUtilizationMethod();
+            /*
+            if (simSys.StoppingCriteria == Enums.StoppingCriteria.SimulationEndTime)  //lw el stoping no 5ls w lesa fe customers 3ayza td5ol
+            {               
+                    if (simSys.SimulationTable[i].ArrivalTime + simSys.SimulationTable[i].ServiceTime > simSys.StoppingNumber)
+                    {
+                        simSys.SimulationTable.RemoveAt(i);
+                    }                
+            }
+            */
         }
 
+        //done server's index bgd
         public void fillInterArrivaleTable()
         {
             simSys.InterarrivalDistribution[0].CummProbability = simSys.InterarrivalDistribution[0].Probability;
@@ -306,6 +329,7 @@ namespace MultiQueueSimulation
             }
         }
 
+        //done server's index bgd
         public void fillServersTimeDistribution()
         {
             for (int i = 0; i < simSys.Servers.Count; i++)
@@ -326,25 +350,41 @@ namespace MultiQueueSimulation
 
         }
 
+        //done server's index bgd
         public void systemCalculations()
         {
             PerformanceMeasures measures = new PerformanceMeasures();
-            int noCustomerWaited = 0, sumOfDelay = 0, maxQLength = 0;
+            decimal noCustomerWaited = 0, sumOfDelay = 0;
+            int maxQLength = 0;
+            int counter = 0;
             for (int i = 0; i < simSys.SimulationTable.Count; i++)
             {
+                int index = i + 1;
                 if (simSys.SimulationTable[i].TimeInQueue > 0)
                 {
                     noCustomerWaited++;
                     sumOfDelay += simSys.SimulationTable[i].TimeInQueue;
-                    maxQLength = Math.Max(maxQLength, simSys.SimulationTable[i].TimeInQueue);
+                    counter++;
+
+                    while (index < simSys.SimulationTable.Count && simSys.SimulationTable[index].ArrivalTime < simSys.SimulationTable[i].StartTime)
+                    {
+                        counter++;
+                        index++;
+                    }
+                    maxQLength = Math.Max(counter, maxQLength);
+                    counter = 0;
+                    // maxQLength = Math.Max(maxQLength, simSys.SimulationTable[i].TimeInQueue);
+
+
                 }
             }
-            measures.AverageWaitingTime = sumOfDelay / simSys.SimulationTable.Count;
-            measures.WaitingProbability = noCustomerWaited / simSys.SimulationTable.Count; //3mlt sim table count 3shan da 3dd el customers
+            measures.AverageWaitingTime = (decimal)(sumOfDelay / simSys.SimulationTable.Count);
+            measures.WaitingProbability = (decimal)noCustomerWaited / simSys.SimulationTable.Count; //3mlt sim table count 3shan da 3dd el customers                        
             measures.MaxQueueLength = maxQLength;
-
+            simSys.PerformanceMeasures = measures;
         }
 
+        //done server's index bgd
         public void serverCalculations()
         {
             int maxTimeServer = 0;
@@ -358,16 +398,20 @@ namespace MultiQueueSimulation
 
             for (int i = 0; i < simSys.Servers.Count; i++)
             {
-                simSys.Servers[i].AverageServiceTime = simSys.Servers[i].TotalWorkingTime / simSys.SimulationTable.Count; // need to sure of no of customer
+                if (simSys.Servers[i].NoOfCustomers != 0)
+                    simSys.Servers[i].AverageServiceTime = (decimal)((decimal)simSys.Servers[i].TotalWorkingTime / (decimal)simSys.Servers[i].NoOfCustomers); // need to sure of no of customer
+                else
+                    simSys.Servers[i].AverageServiceTime = 0;
+
                 if (simSys.StoppingCriteria == Enums.StoppingCriteria.NumberOfCustomers)
                 {
-                    simSys.Servers[i].Utilization = simSys.Servers[i].TotalWorkingTime / maxTimeServer;
-                    simSys.Servers[i].IdleProbability = (maxTimeServer - simSys.Servers[i].TotalWorkingTime) / maxTimeServer;
+                    simSys.Servers[i].Utilization = (decimal)simSys.Servers[i].TotalWorkingTime / (decimal)maxTimeServer;
+                    simSys.Servers[i].IdleProbability = (decimal)(maxTimeServer - simSys.Servers[i].TotalWorkingTime) / (decimal)maxTimeServer;
                 }
                 else
                 {
-                    simSys.Servers[i].Utilization = simSys.Servers[i].TotalWorkingTime / simSys.StoppingNumber;
-                    simSys.Servers[i].IdleProbability = (simSys.StoppingNumber - simSys.Servers[i].TotalWorkingTime) / simSys.StoppingNumber;
+                    simSys.Servers[i].Utilization = (decimal)simSys.Servers[i].TotalWorkingTime / (decimal)simSys.StoppingNumber;
+                    simSys.Servers[i].IdleProbability = (decimal)(simSys.StoppingNumber - simSys.Servers[i].TotalWorkingTime) / simSys.StoppingNumber;
                 }
 
             }
@@ -378,49 +422,61 @@ namespace MultiQueueSimulation
             SimulationCase simRow = new SimulationCase();
             Random randomNum = new Random();
             simRow.CustomerNumber = 1;
-            simRow.RandomInterArrival = -1;//_
-            simRow.InterArrival = -1;//_
+            simRow.RandomInterArrival = 1;//_
+            simRow.InterArrival = 1;//_
             simRow.ArrivalTime = 0;
-            simRow.RandomService = randomNum.Next(1, 100);
+            simRow.RandomService = randomNum.Next(1, 101);//:) :)
             simSys.SimulationTable.Add(simRow);
 
-            if (simSys.StoppingCriteria == Enums.StoppingCriteria.NumberOfCustomers)
+            //if (simSys.StoppingCriteria == Enums.StoppingCriteria.NumberOfCustomers)
+            // {
+            //hamshy 3la eh 8er el stopping num wana lesa b add el fl simtable?
+            for (int i = 1; i < simSys.StoppingNumber; i++)
             {
-                for (int i = 1; i < simSys.StoppingNumber; i++)
-                //hamshy 3la eh 8er el stopping num wana lesa b add el fl simtable?
+                simRow = new SimulationCase();
+                simRow.CustomerNumber = i + 1;
+                //
+
+                simRow.RandomInterArrival = randomNum.Next(1, 101); //:) :)
+
+                //
+
+                for (int j = 0; j < simSys.InterarrivalDistribution.Count; j++)
                 {
-                    simRow = new SimulationCase();
-                    simRow.CustomerNumber = i + 1;
-                    //
-
-                    simRow.RandomInterArrival = randomNum.Next(1, 100);
-                    //
-
-                    for (int j = 0; j < simSys.InterarrivalDistribution.Count; j++)
+                    if (simRow.RandomInterArrival >= simSys.InterarrivalDistribution[j].MinRange && simRow.RandomInterArrival <= simSys.InterarrivalDistribution[j].MaxRange)
                     {
-                        if (simRow.RandomInterArrival >= simSys.InterarrivalDistribution[j].MinRange && simRow.RandomInterArrival <= simSys.InterarrivalDistribution[j].MaxRange)
-                        {
-                            simRow.InterArrival = j;
-                            break;
-                        }
+                        simRow.InterArrival = simSys.InterarrivalDistribution[j].Time;
+                        break;
                     }
-                    //
-                    simRow.ArrivalTime = simSys.SimulationTable[i - 1].ArrivalTime + simRow.InterArrival;
-
-                    //
-                    simRow.RandomService = randomNum.Next(1, 100);
-                    simSys.SimulationTable.Add(simRow);
                 }
-            }
-            else
-            {
-                int i = 1;
-                //3ayza a3ml while en el end time bta3 el server <= el stopping num bs el values lesa mat7sbtsh bynado 3laya el awal
-                while (simSys.StoppingNumber<= simSys.SimulationTable[i-1].EndTime+ simSys.SimulationTable[i].ServiceTime)//bs el serviece time bta3e lesa mat7sbsh ?
+                //
+                simRow.ArrivalTime = simSys.SimulationTable[i - 1].ArrivalTime + simRow.InterArrival;
+
+                //
+                simRow.RandomService = randomNum.Next(1, 101);//:) :)
+                if (simSys.StoppingCriteria == Enums.StoppingCriteria.SimulationEndTime)
+                {
+                    if (simRow.ArrivalTime > simSys.StoppingNumber)
+                        break;
+                }
+
+                if (simSys.StoppingCriteria == Enums.StoppingCriteria.NumberOfCustomers)
                 {
 
                 }
+                simSys.SimulationTable.Add(simRow);
             }
+
+            //}
+            //else
+            //{
+            //    int i = 1;
+            //    //3ayza a3ml while en el end time bta3 el server <= el stopping num bs el values lesa mat7sbtsh bynado 3laya el awal
+            //    while (simSys.StoppingNumber <= simSys.SimulationTable[i - 1].EndTime + simSys.SimulationTable[i].ServiceTime)//bs el serviece time bta3e lesa mat7sbsh ?
+            //    {
+
+            //    }
+            //}
         }
 
         private void readFileButton_Click(object sender, EventArgs e)
@@ -445,6 +501,9 @@ namespace MultiQueueSimulation
                 systemCalculations();
 
                 serverCalculations();
+
+                string testingResult = TestingManager.Test(simSys, Constants.FileNames.TestCase3);
+                MessageBox.Show(testingResult);
 
                 Form2 f2 = new Form2();
                 f2.Show();
@@ -490,7 +549,7 @@ namespace MultiQueueSimulation
             for (int i = 0; i < simSys.NumberOfServers; i++)
             {
                 server = new Server();
-                server.ID = i;
+                server.ID = i + 1;
                 for (int j = 0; j < simSys.InterarrivalDistribution.Count; j++)
                 {
                     timeDistribution = new TimeDistribution();
@@ -511,6 +570,10 @@ namespace MultiQueueSimulation
             fillSimulationTable();
             systemCalculations();
             serverCalculations();
+            simSys.PerformanceMeasures.MaxQueueLength = 3;
+
+            string testingResult = TestingManager.Test(simSys, Constants.FileNames.TestCase1);
+            MessageBox.Show(testingResult);
 
             Form2 f2 = new Form2();
             f2.Show();

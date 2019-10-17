@@ -64,7 +64,7 @@ namespace MultiQueueSimulation
             for (int i = 0; i < Form1.simSys.SimulationTable.Count; i++)
             {
                 int serverID = Form1.simSys.SimulationTable[i].AssignedServer.ID;
-                int col = 5 + (3 * serverID);
+                int col = 5 + (3 * (serverID-1));
 
                 dataGridView1.Rows[i].Cells[col].Value = Form1.simSys.SimulationTable[i].StartTime;
                 dataGridView1.Rows[i].Cells[col + 1].Value = Form1.simSys.SimulationTable[i].ServiceTime;
