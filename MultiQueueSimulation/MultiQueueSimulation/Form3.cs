@@ -41,7 +41,7 @@ namespace MultiQueueSimulation
             //int col = 5 + (3 * serverID-1);
             for (int i = 0; i < Form1.simSys.SimulationTable.Count; i++)
             {
-                if (Form1.simSys.SimulationTable[i].AssignedServer.ID == serverID - 1)
+                if (Form1.simSys.SimulationTable[i].AssignedServer.ID == serverID)
                 {
                    // statechart.Series[0].ChartType = SeriesChartType.Column;
                   int p1 = statechart.Series[0].Points.AddXY(Form1.simSys.SimulationTable[i].StartTime, 1);

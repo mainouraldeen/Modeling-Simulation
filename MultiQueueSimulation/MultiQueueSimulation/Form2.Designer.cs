@@ -46,7 +46,7 @@
             // 
             // showChartsbutton
             // 
-            this.showChartsbutton.Location = new System.Drawing.Point(567, 431);
+            this.showChartsbutton.Location = new System.Drawing.Point(247, 436);
             this.showChartsbutton.Name = "showChartsbutton";
             this.showChartsbutton.Size = new System.Drawing.Size(165, 32);
             this.showChartsbutton.TabIndex = 4;
@@ -59,7 +59,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(1275, 475);
+            this.ClientSize = new System.Drawing.Size(1275, 554);
             this.Controls.Add(this.showChartsbutton);
             this.Controls.Add(this.dataGridView1);
             this.Name = "Form2";
