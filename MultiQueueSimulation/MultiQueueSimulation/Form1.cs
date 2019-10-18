@@ -250,7 +250,8 @@ namespace MultiQueueSimulation
                     {
                         for (int r = 0; r < simSys.Servers[randomServer].TimeDistribution.Count; r++)
                         {
-                            int CustomerServiceTime = simSys.SimulationTable[i].ServiceTime;
+                            //int CustomerServiceTime = simSys.SimulationTable[i].ServiceTime;
+                            int CustomerServiceTime = simSys.SimulationTable[i].RandomService;
                             int MinRange = simSys.Servers[randomServer].TimeDistribution[r].MinRange;
                             int MaxRange = simSys.Servers[randomServer].TimeDistribution[r].MaxRange;
                             if (CustomerServiceTime >= MinRange && CustomerServiceTime <= MaxRange)
@@ -483,7 +484,7 @@ namespace MultiQueueSimulation
                 systemCalculations();
                 serverCalculations();
 
-                string testingResult = TestingManager.Test(simSys, Constants.FileNames.TestCase1);
+                string testingResult = TestingManager.Test(simSys, Constants.FileNames.TestCase2);
                 MessageBox.Show(testingResult);
 
                 Form2 f2 = new Form2();
@@ -558,7 +559,7 @@ namespace MultiQueueSimulation
             fillSimCaseRow();
             systemCalculations();
             serverCalculations();
-            simSys.PerformanceMeasures.MaxQueueLength = 3;
+          //  simSys.PerformanceMeasures.MaxQueueLength = 3;
 
             string testingResult = TestingManager.Test(simSys, Constants.FileNames.TestCase1);
             MessageBox.Show(testingResult);
