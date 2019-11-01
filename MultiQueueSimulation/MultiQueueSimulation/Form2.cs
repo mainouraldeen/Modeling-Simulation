@@ -52,7 +52,7 @@ namespace MultiQueueSimulation
                 Form1.simSys.SimulationTable[i].RandomInterArrival,
                 Form1.simSys.SimulationTable[i].InterArrival,
                 Form1.simSys.SimulationTable[i].ArrivalTime,
-                Form1.simSys.SimulationTable[i].RandomService,
+                Form1.simSys.SimulationTable[i].RandomService,  
 
                 });
             }
