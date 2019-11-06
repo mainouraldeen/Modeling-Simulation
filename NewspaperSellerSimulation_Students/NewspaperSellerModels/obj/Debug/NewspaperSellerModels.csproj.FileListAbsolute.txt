@@ -36,3 +36,9 @@ C:\Users\PC\Desktop\NewspaperSellerSimulation_Students\NewspaperSellerModels\obj
 C:\Users\PC\Desktop\NewspaperSellerSimulation_Students\NewspaperSellerModels\obj\Debug\NewspaperSellerModels.csproj.CoreCompileInputs.cache
 C:\Users\PC\Desktop\NewspaperSellerSimulation_Students\NewspaperSellerModels\obj\Debug\NewspaperSellerModels.dll
 C:\Users\PC\Desktop\NewspaperSellerSimulation_Students\NewspaperSellerModels\obj\Debug\NewspaperSellerModels.pdb
+C:\Users\nourh\Downloads\NewspaperSellerSimulation_Students-20191101T194925Z-001\NewspaperSellerModels\bin\Debug\NewspaperSellerModels.dll
+C:\Users\nourh\Downloads\NewspaperSellerSimulation_Students-20191101T194925Z-001\NewspaperSellerModels\bin\Debug\NewspaperSellerModels.pdb
+C:\Users\nourh\Downloads\NewspaperSellerSimulation_Students-20191101T194925Z-001\NewspaperSellerModels\obj\Debug\NewspaperSellerModels.csprojAssemblyReference.cache
+C:\Users\nourh\Downloads\NewspaperSellerSimulation_Students-20191101T194925Z-001\NewspaperSellerModels\obj\Debug\NewspaperSellerModels.csproj.CoreCompileInputs.cache
+C:\Users\nourh\Downloads\NewspaperSellerSimulation_Students-20191101T194925Z-001\NewspaperSellerModels\obj\Debug\NewspaperSellerModels.dll
+C:\Users\nourh\Downloads\NewspaperSellerSimulation_Students-20191101T194925Z-001\NewspaperSellerModels\obj\Debug\NewspaperSellerModels.pdb

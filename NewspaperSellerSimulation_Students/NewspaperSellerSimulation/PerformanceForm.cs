@@ -26,7 +26,7 @@ namespace NewspaperSellerSimulation
         {
             totalCostLabel.Text = Form1.simSys.PerformanceMeasures.TotalCost.ToString();
             totalLostLabel.Text = Form1.simSys.PerformanceMeasures.TotalLostProfit.ToString();
-            netProfitLabel.Text = Form1.simSys.PerformanceMeasures.TotalSalesProfit.ToString();
+            totalProfitLabel.Text = Form1.simSys.PerformanceMeasures.TotalSalesProfit.ToString();
             totalSalvageLabel.Text = Form1.simSys.PerformanceMeasures.TotalScrapProfit.ToString();
             netProfitLabel.Text = Form1.simSys.PerformanceMeasures.TotalNetProfit.ToString();
             excessDemandLabel.Text = Form1.simSys.PerformanceMeasures.DaysWithMoreDemand.ToString();
@@ -34,6 +34,11 @@ namespace NewspaperSellerSimulation
         }
 
         private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void label6_Click(object sender, EventArgs e)
         {
 
         }

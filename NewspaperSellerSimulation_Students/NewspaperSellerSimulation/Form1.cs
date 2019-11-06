@@ -18,6 +18,9 @@ namespace NewspaperSellerSimulation
         public Form1()
         {
             InitializeComponent();
+            PictureBox pb1 = new PictureBox();
+            pb1.ImageLocation = "simulation.png";
+            pb1.SizeMode = PictureBoxSizeMode.AutoSize;
         }
         public static SimulationSystem simSys = new SimulationSystem();
 
@@ -83,7 +86,7 @@ namespace NewspaperSellerSimulation
                 MessageBox.Show(testing);
                 Form2 f2 = new Form2();
                 f2.Show();
-                
+                this.Hide();               
 
 
             }
@@ -91,11 +94,12 @@ namespace NewspaperSellerSimulation
 
         public void FillSimulationTable()
         {
-           for (int i=0; i< simSys.NumOfRecords;i++)
+            Random rand = new Random();
+            for (int i=0; i< simSys.NumOfRecords;i++)
             {
                 SimulationCase simRow = new SimulationCase();
                 simRow.DayNo = i + 1;
-                Random rand = new Random();
+                
                 simRow.RandomNewsDayType = rand.Next(1, 101);//chech if 101 is included or not
                 simRow.RandomDemand = rand.Next(1, 101);
 
@@ -199,7 +203,7 @@ namespace NewspaperSellerSimulation
             for (int i = 0; i < simSys.NumOfRecords; i++)
             {
                 totalRevenue += simSys.SimulationTable[i].SalesProfit;
-                totalCost += simSys.PurchasePrice * simSys.NumOfNewspapers; 
+                totalCost += simSys.PurchasePrice * simSys.NumOfNewspapers; // hal de hna wala bara el loop??
                 totalLostProfit += simSys.SimulationTable[i].LostProfit;
                 totalSalvage += simSys.SimulationTable[i].ScrapProfit;
                 if (simSys.SimulationTable[i].LostProfit > 0)
@@ -219,6 +223,11 @@ namespace NewspaperSellerSimulation
             measures.TotalScrapProfit = totalSalvage;
             simSys.PerformanceMeasures = measures;
 
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            
         }
     }
 }

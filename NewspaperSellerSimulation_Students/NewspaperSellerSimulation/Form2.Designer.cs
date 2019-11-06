@@ -46,13 +46,13 @@
             // 
             // BackButton
             // 
-            this.BackButton.BackColor = System.Drawing.Color.Coral;
+            this.BackButton.BackColor = System.Drawing.Color.CadetBlue;
             this.BackButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.BackButton.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BackButton.ForeColor = System.Drawing.Color.White;
-            this.BackButton.Location = new System.Drawing.Point(264, 556);
+            this.BackButton.Location = new System.Drawing.Point(262, 571);
             this.BackButton.Name = "BackButton";
-            this.BackButton.Size = new System.Drawing.Size(133, 43);
+            this.BackButton.Size = new System.Drawing.Size(140, 43);
             this.BackButton.TabIndex = 1;
             this.BackButton.Text = "Back";
             this.BackButton.UseVisualStyleBackColor = false;
@@ -60,13 +60,13 @@
             // 
             // button2
             // 
-            this.button2.BackColor = System.Drawing.Color.Coral;
+            this.button2.BackColor = System.Drawing.Color.CadetBlue;
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button2.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button2.ForeColor = System.Drawing.Color.White;
-            this.button2.Location = new System.Drawing.Point(858, 556);
+            this.button2.Location = new System.Drawing.Point(868, 571);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(133, 43);
+            this.button2.Size = new System.Drawing.Size(139, 43);
             this.button2.TabIndex = 2;
             this.button2.Text = "Performance";
             this.button2.UseVisualStyleBackColor = false;
@@ -77,14 +77,14 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
-            this.ClientSize = new System.Drawing.Size(1282, 635);
+            this.BackColor = System.Drawing.Color.PaleTurquoise;
+            this.ClientSize = new System.Drawing.Size(1301, 635);
             this.ControlBox = false;
             this.Controls.Add(this.button2);
             this.Controls.Add(this.BackButton);
             this.Controls.Add(this.dataGridView1);
             this.Name = "Form2";
-            this.Text = "Form2";
+            this.Text = "Data";
             this.Load += new System.EventHandler(this.Form2_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
