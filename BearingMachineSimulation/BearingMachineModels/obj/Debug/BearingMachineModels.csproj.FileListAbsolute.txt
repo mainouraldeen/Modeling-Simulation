@@ -42,3 +42,9 @@ C:\Users\soa\Desktop\Task3 Template\Task3 Template\[Students]_Template\BearingMa
 C:\Users\soa\Desktop\Task3 Template\Task3 Template\[Students]_Template\BearingMachineModels\obj\Debug\BearingMachineModels.csproj.CoreCompileInputs.cache
 C:\Users\soa\Desktop\Task3 Template\Task3 Template\[Students]_Template\BearingMachineModels\obj\Debug\BearingMachineModels.dll
 C:\Users\soa\Desktop\Task3 Template\Task3 Template\[Students]_Template\BearingMachineModels\obj\Debug\BearingMachineModels.pdb
+C:\Users\nourh\Documents\GitHub\MultiQueueSimulation\BearingMachineSimulation\BearingMachineModels\bin\Debug\BearingMachineModels.dll
+C:\Users\nourh\Documents\GitHub\MultiQueueSimulation\BearingMachineSimulation\BearingMachineModels\bin\Debug\BearingMachineModels.pdb
+C:\Users\nourh\Documents\GitHub\MultiQueueSimulation\BearingMachineSimulation\BearingMachineModels\obj\Debug\BearingMachineModels.csprojAssemblyReference.cache
+C:\Users\nourh\Documents\GitHub\MultiQueueSimulation\BearingMachineSimulation\BearingMachineModels\obj\Debug\BearingMachineModels.csproj.CoreCompileInputs.cache
+C:\Users\nourh\Documents\GitHub\MultiQueueSimulation\BearingMachineSimulation\BearingMachineModels\obj\Debug\BearingMachineModels.dll
+C:\Users\nourh\Documents\GitHub\MultiQueueSimulation\BearingMachineSimulation\BearingMachineModels\obj\Debug\BearingMachineModels.pdb

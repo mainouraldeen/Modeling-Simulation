@@ -103,3 +103,17 @@ C:\Users\soa\Desktop\Task3 Template\Task3 Template\[Students]_Template\BearingMa
 C:\Users\soa\Desktop\Task3 Template\Task3 Template\[Students]_Template\BearingMachineSimulation\obj\Debug\BearingMachineSimulation.csproj.CoreCompileInputs.cache
 C:\Users\soa\Desktop\Task3 Template\Task3 Template\[Students]_Template\BearingMachineSimulation\obj\Debug\BearingMachineSimulation.exe
 C:\Users\soa\Desktop\Task3 Template\Task3 Template\[Students]_Template\BearingMachineSimulation\obj\Debug\BearingMachineSimulation.pdb
+C:\Users\nourh\Documents\GitHub\MultiQueueSimulation\BearingMachineSimulation\BearingMachineSimulation\bin\Debug\BearingMachineSimulation.exe.config
+C:\Users\nourh\Documents\GitHub\MultiQueueSimulation\BearingMachineSimulation\BearingMachineSimulation\bin\Debug\BearingMachineSimulation.exe
+C:\Users\nourh\Documents\GitHub\MultiQueueSimulation\BearingMachineSimulation\BearingMachineSimulation\bin\Debug\BearingMachineSimulation.pdb
+C:\Users\nourh\Documents\GitHub\MultiQueueSimulation\BearingMachineSimulation\BearingMachineSimulation\bin\Debug\BearingMachineModels.dll
+C:\Users\nourh\Documents\GitHub\MultiQueueSimulation\BearingMachineSimulation\BearingMachineSimulation\bin\Debug\BearingMachineModels.pdb
+C:\Users\nourh\Documents\GitHub\MultiQueueSimulation\BearingMachineSimulation\BearingMachineSimulation\bin\Debug\BearingMachineTesting.pdb
+C:\Users\nourh\Documents\GitHub\MultiQueueSimulation\BearingMachineSimulation\BearingMachineSimulation\obj\Debug\BearingMachineSimulation.csprojAssemblyReference.cache
+C:\Users\nourh\Documents\GitHub\MultiQueueSimulation\BearingMachineSimulation\BearingMachineSimulation\obj\Debug\BearingMachineSimulation.Form1.resources
+C:\Users\nourh\Documents\GitHub\MultiQueueSimulation\BearingMachineSimulation\BearingMachineSimulation\obj\Debug\BearingMachineSimulation.Properties.Resources.resources
+C:\Users\nourh\Documents\GitHub\MultiQueueSimulation\BearingMachineSimulation\BearingMachineSimulation\obj\Debug\BearingMachineSimulation.csproj.GenerateResource.cache
+C:\Users\nourh\Documents\GitHub\MultiQueueSimulation\BearingMachineSimulation\BearingMachineSimulation\obj\Debug\BearingMachineSimulation.csproj.CoreCompileInputs.cache
+C:\Users\nourh\Documents\GitHub\MultiQueueSimulation\BearingMachineSimulation\BearingMachineSimulation\obj\Debug\BearingMachineSimulation.csproj.CopyComplete
+C:\Users\nourh\Documents\GitHub\MultiQueueSimulation\BearingMachineSimulation\BearingMachineSimulation\obj\Debug\BearingMachineSimulation.exe
+C:\Users\nourh\Documents\GitHub\MultiQueueSimulation\BearingMachineSimulation\BearingMachineSimulation\obj\Debug\BearingMachineSimulation.pdb
